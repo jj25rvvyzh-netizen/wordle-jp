@@ -230,7 +230,7 @@ const KB_ROWS = [
   ["や","ゆ","よ"],
   ["ら","り","る","れ","ろ"],
   ["わ","を","ん","っ","ー"],
-  ["⌫","決定"],
+  ["゛","゜","⌫","決定"],
 ];
 
 function init() {
@@ -278,13 +278,32 @@ function buildKeyboard() {
   });
 }
 
+const DAKUTEN = {
+  'か':'が','き':'ぎ','く':'ぐ','け':'げ','こ':'ご',
+  'さ':'ざ','し':'じ','す':'ず','せ':'ぜ','そ':'ぞ',
+  'た':'だ','ち':'ぢ','つ':'づ','て':'で','と':'ど',
+  'は':'ば','ひ':'び','ふ':'ぶ','へ':'べ','ほ':'ぼ',
+};
+const HANDAKUTEN = {
+  'は':'ぱ','ひ':'ぴ','ふ':'ぷ','へ':'ぺ','ほ':'ぽ',
+};
+
 function handleKey(k) {
   if (gameOver) return;
-  const row = guesses.length;
   if (k === '⌫') {
     if (current.length > 0) {
       current.pop();
       updateCurrentRow();
+    }
+  } else if (k === '゛') {
+    if (current.length > 0) {
+      const last = current[current.length - 1];
+      if (DAKUTEN[last]) { current[current.length - 1] = DAKUTEN[last]; updateCurrentRow(); }
+    }
+  } else if (k === '゜') {
+    if (current.length > 0) {
+      const last = current[current.length - 1];
+      if (HANDAKUTEN[last]) { current[current.length - 1] = HANDAKUTEN[last]; updateCurrentRow(); }
     }
   } else if (k === '決定') {
     submitGuess();
